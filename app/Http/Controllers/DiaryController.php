@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Diary;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 
 class DiaryController extends Controller
@@ -14,18 +15,11 @@ class DiaryController extends Controller
      */
     public function index()
     {
-        //
+        $diaries = Diary::all();
+        return $diaries;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -35,7 +29,11 @@ class DiaryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated_data = $request->validate([
+            'title' => 'required',
+            'content' => 'required'
+        ]);
+        return Diary::create($validated_data);
     }
 
     /**
@@ -46,19 +44,9 @@ class DiaryController extends Controller
      */
     public function show(Diary $diary)
     {
-        //
+        return $diary;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Diary  $diary
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Diary $diary)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -69,17 +57,12 @@ class DiaryController extends Controller
      */
     public function update(Request $request, Diary $diary)
     {
-        //
+        $validated_data = $request->validate([
+            'title' => 'required',
+            'content' => 'required'
+        ]);
+        $diary->update($validated_data);
+        return $diary;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Diary  $diary
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Diary $diary)
-    {
-        //
-    }
 }
